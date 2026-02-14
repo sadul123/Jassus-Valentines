@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import confetti from "canvas-confetti";
 
 
@@ -34,21 +34,25 @@ export default function App() {
 
   const [musicStarted, setMusicStarted] = useState(false);
 
+    const lastDodgeMs = useRef(0);
+
   // This function runs when they hover the "No" button
   const onNoHover = () => {
-  // Increase the dodge counter
-  setDodges((d) => d + 1);
+    // Prevent duplicate triggers on mobile (pointer + touch events)
+    const now = Date.now();
+    if (now - lastDodgeMs.current < 250) return;
+      lastDodgeMs.current = now;
 
-  // Helper function to generate a random integer between min and max
-  const rand = (min: number, max: number) =>
-    Math.floor(Math.random() * (max - min + 1)) + min;
-  
+    // Random new position for the button
+    const newX = (Math.random() - 0.5) * 200; // move left/right
+    const newY = (Math.random() - 0.5) * 120; // move up/down
 
-  // Update the button's position state
-  setNoPos({
-    x: rand(-140, 140),
-    y: rand(-90, 90),
-   });
+    setNoPos({ x: newX, y: newY });
+
+    // Increase dodge counter
+    setDodges((prev) => prev + 1);
+
+  };
 
   useEffect(() => {
     if (page !== 4) return;
@@ -68,7 +72,7 @@ export default function App() {
   }, [mainAudio, finalAudio]);
 
 
-  };
+  
   useEffect(() => {
     // Only switch if the user has started music already
     if (!musicStarted) return;
