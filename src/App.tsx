@@ -9,28 +9,28 @@ import confetti from "canvas-confetti";
 export default function App() {
   const [page, setPage] = useState<1 | 2 | 3 | 4 | 5>(1);
 
-  // Tracks whether they've accepted
-  const [accepted, setAccepted] = useState(false);
+  
 
   // Counts how many times the "No" button dodged
   const [dodges, setDodges] = useState(0);
   const [noPos, setNoPos] = useState({ x: 0, y: 0 });
 
-  // Controls whether we show the GIF or the final image
-  const [showFinalImage, setShowFinalImage] = useState(false);
+  
+
+  const base = import.meta.env.BASE_URL;
 
   const finalImages = [
-    "/JS_1.jpg",
-    "/JS_2.jpg",
-    "/JS_3.jpg",
-    "/JS_4.jpg",
-    "/JS_5.jpg",
-    "/JS_6.jpg",
+    `${base}JS_1.jpg`,
+    `${base}JS_2.jpg`,
+    `${base}JS_3.jpg`,
+    `${base}JS_4.jpg`,
+    `${base}JS_5.jpg`,
+    `${base}JS_6.jpg`,
   ];
 
   // Audio references
-  const mainAudio = useMemo(() => new Audio("/GoodnightSweetPossums.mp3"), []);
-  const finalAudio = useMemo(() => new Audio("/TumSeHi.mp3"), []);
+  const mainAudio = useMemo(() => new Audio(`${base}GoodnightSweetPossums.mp3`), [base]);
+  const finalAudio = useMemo(() => new Audio(`${base}TumSeHi.mp3`), [base]);
 
   const [musicStarted, setMusicStarted] = useState(false);
 
@@ -42,6 +42,7 @@ export default function App() {
   // Helper function to generate a random integer between min and max
   const rand = (min: number, max: number) =>
     Math.floor(Math.random() * (max - min + 1)) + min;
+  
 
   // Update the button's position state
   setNoPos({
@@ -66,29 +67,8 @@ export default function App() {
     finalAudio.volume = 0.35;
   }, [mainAudio, finalAudio]);
 
-  const startMusic = () => {
-    if (!musicStarted) {
-      mainAudio.play().catch(() => {});
-      setMusicStarted(true);
-    }
-   } ;
+
   };
-  
-  const fadeTo = (audio: HTMLAudioElement, target: number, ms: number) => {
-    const start = audio.volume;
-    const steps = 20;
-    const stepTime = ms / steps;
-    let i = 0;
-
-    const timer = setInterval(() => {
-      i += 1;
-      const next = start + ((target - start) * i) / steps;
-      audio.volume = Math.max(0, Math.min(1, next));
-
-      if (i >= steps) clearInterval(timer);
-    }, stepTime);
-  };
-
   useEffect(() => {
     // Only switch if the user has started music already
     if (!musicStarted) return;
@@ -117,7 +97,10 @@ export default function App() {
       }}
       className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-red-600 via-pink-500 to-purple-500 px-4"
     >
-      <div className="w-full max-w-4xl rounded-3xl bg-white p-4 shadow-xl text-center">
+      <div 
+      key={page}
+      className="w-full max-w-4xl rounded-3xl bg-white p-4 shadow-xl text-center opacity-0 [animation:pageFadeIn_450ms_ease-out_forwards]"
+      >
         {page === 1 && (
           <div>
             <h1 className="text-4xl font-bold text-red-600">For Jassu 🐭</h1>
@@ -176,7 +159,9 @@ export default function App() {
             </button>
 
             <button
-              onMouseEnter={onNoHover}
+              onPointerEnter={onNoHover}   // works for mouse + touch + pen
+              onPointerDown={onNoHover}    // triggers when they tap it
+              onTouchStart={onNoHover}     // extra safety for some mobile browsers
               style={{ transform: `translate(${noPos.x}px, ${noPos.y}px)` }}
               className="rounded-2xl border border-pink-200 bg-white px-6 py-3 font-medium shadow-sm transition-transform"
             >
@@ -193,7 +178,7 @@ export default function App() {
            {/* Effect selector buttons */}
          
           <img
-            src="/milkmochabear.png"
+            src={`${base}milkmochabear.png`}
             alt="Celebration"
             className="mt-6 mx-auto rounded-2xl shadow-lg w-68 opacity-0 [animation:popIn_500ms_ease-out_forwards]"
           />
@@ -212,11 +197,11 @@ export default function App() {
       {page === 4 && (
         <div className="rounded-3xl bg-pink-50 p-1">
           <p className="text-2xl font-bold text-red-600">
-            Here's a kiss my puppy, from your kitty and a few memories 😄
+            Here's a kiss my puppy, from your kitty... and a few memories 😄
           </p>
           <div className="mt-6">
             <img
-              src="/catkiss.gif"
+              src={`${base}catkiss.gif`}
               alt="Cute moment"
               className="mx-auto rounded-2xl shadow-lg w-200"
             />

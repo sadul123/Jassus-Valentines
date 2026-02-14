@@ -3,8 +3,6 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'  // 👈 add this line
 
 export default defineConfig({
-  plugins: [
-    react(),
-    tailwindcss(),  // 👈 add this line
-  ],
-})
+  base: "/Jassus-Valentines/",
+  plugins: [react(), tailwindcss()],
+});
