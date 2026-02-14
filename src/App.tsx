@@ -64,7 +64,7 @@ export default function App() {
     finalAudio.loop = true;
 
     mainAudio.volume = 0.35;
-    finalAudio.volume = 0.35;
+    finalAudio.volume = 0.25;
   }, [mainAudio, finalAudio]);
 
 
