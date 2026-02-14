@@ -64,7 +64,7 @@ export default function App() {
     finalAudio.loop = true;
 
     mainAudio.volume = 0.35;
-    finalAudio.volume = 0.25;
+    finalAudio.volume = 0.15;
   }, [mainAudio, finalAudio]);
 
 
@@ -161,9 +161,8 @@ export default function App() {
             <button
               onPointerEnter={onNoHover}   // works for mouse + touch + pen
               onPointerDown={onNoHover}    // triggers when they tap it
-              onTouchStart={onNoHover}     // extra safety for some mobile browsers
               style={{ transform: `translate(${noPos.x}px, ${noPos.y}px)` }}
-              className="rounded-2xl border border-pink-200 bg-white px-6 py-3 font-medium shadow-sm transition-transform"
+              className="rounded-2xl border border-pink-200 bg-white px-6 py-3 font-medium shadow-sm transition-transform select-none touch-none"
             >
               No 🙃
             </button>
@@ -174,7 +173,7 @@ export default function App() {
        {page === 3 && (
         <div className="rounded-2xl bg-pink-50 p-8">
           <p className="text-4xl font-semibold text-red-600">You just made me the happiest person ever🥰</p>
-          <p className="mt-4 text-2xl text-red-500 font-medium">Here's a little hug cutie</p>
+          <p className="mt-4 text-2xl text-red-500 font-medium">Here's a little hug cutie 🤗</p>
            {/* Effect selector buttons */}
          
           <img
